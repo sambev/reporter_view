@@ -4,11 +4,16 @@
     <meta charset="UTF-8">
     <title>Document</title>
     {% load staticfiles %}
+    {% block header %}
+    {% endblock %}
     <link rel="stylesheet" href="{% static "css/common/base.css" %}">
 </head>
 <body>
     <div class="container">
-        yo dawg
+        {% block body %}
+        {% endblock %}
     </div>
+    {% block js %}
+    {% endblock %}
 </body>
 </html>

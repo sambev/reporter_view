@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="row">
+    <form action="/signup">
+        <div class="col-lg-3 col-lg-offset-2">
+            <input class="form-control" type="text" placeholder="Email">
+        </div>
+        <div class="col-lg-3">
+            <input class="form-control" type="password" placeholder="Password">
+        </div>
+        <div class="col-lg-2">
+            <input class="btn btn-primary" type="submit" value="Create Account">
+        </div>
+    </form>
+</div>
+<br>
+<div class="row">
+    <div class="col-lg-2 col-lg-offset-5">
+        <a href="/login">Login</a>
+    </div>
+</div>
+{% endblock %}
