@@ -1,0 +1,8 @@
+*.pyc
+bower_components/
+static/vendor/
+build
+node_modules
+.sass-cache
+reports/static/css/*.css
+npm-debug.log
