@@ -8,22 +8,25 @@
 <br>
 <br>
 <div class="row">
-    <form action="/signup">
-        <div class="col-lg-3 col-lg-offset-2">
-            <input class="form-control" type="text" placeholder="Email">
-        </div>
-        <div class="col-lg-3">
-            <input class="form-control" type="password" placeholder="Password">
-        </div>
-        <div class="col-lg-2">
-            <input class="btn btn-primary" type="submit" value="Create Account">
-        </div>
-    </form>
-</div>
-<br>
-<div class="row">
-    <div class="col-lg-2 col-lg-offset-5">
-        <a href="/login">Login</a>
+    <div class="col-lg-3 col-lg-offset-2">
+        <form action="/signup" method="POST">{% csrf_token %}
+            <input class="form-control" type="text" name="email" placeholder="Email">
+            <br>
+            <input class="form-control" type="password" name="password" placeholder="Password">
+            <br>
+            <input class="form-control" type="password" name="passwordconf" placeholder="Password Confirmation">
+            <br>
+            <input style="width:100%" class="btn btn-primary" type="submit" value="Create Account">
+        </form>
+    </div>
+    <div class="col-lg-3 col-lg-offset-2">
+        <form action="/login" method="POST">{% csrf_token %}
+            <input class="form-control" type="text" name="email" placeholder="Email">
+            <br>
+            <input class="form-control" type="password" name="password" placeholder="Password">
+            <br>
+            <input style="width:100%" class="btn btn-success" type="submit" value="Login">
+        </form>
     </div>
 </div>
 {% endblock %}
