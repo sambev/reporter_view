@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="col-lg-3 col-lg-offset-2">
+        <form action="/reports/upload" enctype="multipart/form-data" method="POST">{% csrf_token %}
+            <input type="file" name="reports">
+            <br>
+            <input style="width:100%" class="btn btn-primary" type="submit" value="Upload Report">
+        </form>
+    </div>
+{% endblock %}

@@ -1,10 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import UserManager
 
 class User(AbstractBaseUser):
     ACTIVE = 'active'
     DELETED = 'deleted'
-
+    USERNAME_FIELD = 'email'
+    objects = UserManager()
 
     email = models.EmailField(max_length=254, unique=True)
     first_name = models.CharField(max_length=50, blank=True)
@@ -19,7 +21,6 @@ class User(AbstractBaseUser):
         default=ACTIVE
     )
 
-    USERNAME_FIELD = 'email'
 
     class Meta:
         verbose_name = 'user'

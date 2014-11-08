@@ -37,7 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'reporter_view.base',
-    'reporter_view.reports'
+    'reporter_view.reports',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -66,6 +66,12 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
+    },
+
+    'mongo': {
+        'HOST': 'localhost',
+        'PORT': 27017,
+        'REPORT_COLLECTION': 'snapshots',
     }
 }
 
