@@ -72,6 +72,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': 27017,
         'REPORT_COLLECTION': 'snapshots',
+        'QUESTIONS_COLLECTION': 'questions'
     }
 }
 

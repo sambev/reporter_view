@@ -1,14 +1,22 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from reporter_view.base.controllers.base import BaseController, HomeController
-from reporter_view.base.controllers.auth import LoginController, SignUpController
-from reporter_view.reports.controllers.upload import ReportUploadController
+from reporter_view.base.controllers.base import BaseController
+from reporter_view.base.controllers.auth import AuthController
+from reporter_view.reports.controllers.reports import ReportController
+from reporter_view.reports.controllers.reports_api import ReportAPIController
+
+report_api = ReportAPIController()
+report_controller = ReportController()
 
 urlpatterns = patterns('',
-    url(r'^$', BaseController.as_view()),
-    url(r'^login', LoginController.as_view()),
-    url(r'^signup', SignUpController.as_view()),
-    url(r'^home', HomeController.as_view()),
-    url(r'^reports/upload', ReportUploadController.as_view()),
+    url(r'^$', BaseController.index),
+    url(r'^home/', BaseController.home),
+    url(r'^upload', BaseController.upload),
+
+    url(r'^login', AuthController.login),
+    url(r'^signup', AuthController.signup),
+
+    url(r'^reports/upload', report_controller.upload),
+    url(r'^reports/totals', report_api.get_totals)
 )

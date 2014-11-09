@@ -1,21 +1,23 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.views.generic import View
 from django.core.context_processors import csrf
 
 from reporter_view.base.models import User
 
-class BaseController(View):
+class BaseController(object):
 
-    def get(self, request):
+    @classmethod
+    def index(self, request):
         c = {}
         c.update(csrf(request))
         return render(request, 'index.html', c)
 
+    @classmethod
+    def home(self, request):
+        return render(request, 'home.html')
 
-class HomeController(View):
-
-    def get(self, request):
+    @classmethod
+    def upload(self, request):
         c = {}
         c.update(csrf(request))
-        return render(request, 'home.html', c)
+        return render(request, 'upload.html', c)
