@@ -12,6 +12,9 @@ class ReportAPIController(object):
 
     def get_totals(self, request):
         totals = self.service.get_totals(request.user.email)
-        print totals
         return HttpResponse(json.dumps(totals))
+
+    def get_question_summaries(self, request):
+        summaries = self.service.get_question_summaries(request.user.email)
+        return HttpResponse(json.dumps(summaries))
 

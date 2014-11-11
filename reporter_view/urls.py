@@ -18,5 +18,6 @@ urlpatterns = patterns('',
     url(r'^signup', AuthController.signup),
 
     url(r'^reports/upload', report_controller.upload),
-    url(r'^reports/totals', report_api.get_totals)
+    url(r'^reports/totals', report_api.get_totals),
+    url(r'^reports/summary', report_api.get_question_summaries)
 )

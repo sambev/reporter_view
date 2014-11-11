@@ -124,3 +124,83 @@ class ReportService(object):
         totals['avg_per_day'] = len(reports) / (last_date - first_date).days
 
         return totals
+
+
+    def get_question_summaries(self, dbname):
+        self.set_db_context(dbname)
+        questions = self.questions.find({} , {'_id': 0, 'prompt': 1})
+        summaries = [self.get_summary_for_question(dbname, question['prompt']) for question in questions]
+        organized = {
+            'numeric': [],
+            'tokens': [],
+            'locations': []
+        }
+
+        for summary in summaries:
+            if summary['type'] == 'numeric':
+                organized['numeric'].append(summary)
+            elif summary['type'] == 'tokens':
+                organized['tokens'].append(summary)
+            elif summary['type'] == 'locations':
+                organized['locations'].append(summary)
+
+        return organized
+
+
+    def get_summary_for_question(self, dbname, question):
+        """Get the summary for the question
+        :param {string} dbname
+        :param {string} question
+
+        :return {dict}
+        """
+        query = {
+            'responses.questionPrompt': question
+        }
+        filters = ['responses']
+        reports = self._query(dbname, query, filters)
+        summary = {
+            'question': question,
+            'type': None,
+            'data': {}
+        }
+        entries = []
+        numeric_total = 0
+
+        for report in reports:
+            for response in report.get('responses', []):
+                if response.get('questionPrompt') == question:
+                    if response.get('tokens'):
+                        summary['type'] = 'tokens'
+                        tokens = response.get('tokens')
+
+                        for token in tokens:
+                            if token not in summary['data']:
+                                summary['data'][token] = 1
+                            else:
+                                summary['data'][token] += 1
+
+                    elif response.get('numericResponse'):
+                        summary['type'] = 'numeric'
+                        numeric_total += float(response['numericResponse'])
+                        entries.append(float(response['numericResponse']))
+
+                    elif 'locationResponse' in response:
+                        summary['type'] = 'locations'
+                        location = response.get('locationResponse', {}).get('text')
+
+                        if location not in summary['data']:
+                            summary['data'][location] = 1
+                        else:
+                            summary['data'][location] += 1
+
+        if summary['type'] == 'numeric':
+            summary['min'] = min(entries)
+            summary['max'] = max(entries)
+            summary['avg'] = numeric_total / len(entries)
+            summary['current'] = entries[-1]
+
+        elif summary['type'] in ['tokens', 'location']:
+            summary['data'] = sorted(summary['data'].items(), key=itemgetter(1), reverse=True)
+
+        return summary
