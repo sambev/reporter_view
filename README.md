@@ -1,10 +1,7 @@
-Quantified Self Companion (Name is TBD)
+Reporter View Companion (Name is TBD)
 =======================================
 
-The goal of this project is to bring all the data from self tracking apps into
-one place.
-
-Currently the ReporterApp is supported.
+The goal of this project is to bring all the data from ReporterApp.
 
 Dev and design contributions are deeply appreciated.  Make a pull request!
 
