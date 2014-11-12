@@ -37,4 +37,7 @@ Create css files with:
 `grunt less`
 
 Once your database servers are running, start the webserver with
+
 `python manage.py runserver`
+
+Now just create an account and upload your data.
