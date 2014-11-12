@@ -23,7 +23,10 @@ class AuthController(object):
         user.email = request.POST['email']
         user.set_password(request.POST['password'])
         user.save()
-        login(request, user)
+
+        user = authenticate(username=request.POST['email'], password=request.POST['password'])
+        if user:
+            login(request, user)
 
         return redirect('/upload')
 
