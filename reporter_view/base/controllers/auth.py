@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.core.mail import send_mail
+from django.conf import settings
 
 from reporter_view.base.models import User
 
@@ -34,3 +36,13 @@ class AuthController(object):
     def signout(self, request):
         logout(request)
         return redirect('/')
+
+
+    @classmethod
+    def alpha_request(self, request):
+        send_mail(
+            'Alpha Invite Request', # Subject
+            'This person wants an invite', # Message
+            request.POST.get('alpha_email', None), # From email
+            [settings.DEFAULT_TO_EMAIL]
+        )

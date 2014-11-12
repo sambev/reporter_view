@@ -57,7 +57,7 @@
 <br>
 <br>
 <div class="row">
-    <div class="col-lg-3 col-lg-offset-2">
+<!--     <div class="col-lg-3 col-lg-offset-2">
         <form action="/signup" method="POST">{% csrf_token %}
             <input class="form-control" type="text" name="email" placeholder="Email">
             <br>
@@ -66,6 +66,14 @@
             <input class="form-control" type="password" name="passwordconf" placeholder="Password Confirmation">
             <br>
             <input style="width:100%" class="btn btn-primary" type="submit" value="Create Account">
+        </form>
+    </div>
+ -->
+    <div class="col-lg-3 col-lg-offset-2">
+        <form action="/alpha_request">{% csrf_token %}
+            <input class="form-control" type="text" name="alpha_email" placeholder="Email">
+            <br>
+            <input style="width:100%" class="btn btn-primary" type="submit" value="Request Alpha Invite">
         </form>
     </div>
     <div class="col-lg-3 col-lg-offset-2">

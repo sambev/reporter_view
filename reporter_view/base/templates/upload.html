@@ -9,6 +9,7 @@
     </div>
     <div class="col-lg-3 col-xs-12">
         <ul class="nav nav-pills page-header">
+            <li><a href="/upload">Upload</a></li>
             <li><a href="/home">Home</a></li>
             <li><a href="/signout">Sign Out</a></li>
         </ul>
@@ -23,7 +24,12 @@
         </form>
     </div>
     <div class="col-lg-4">
-        <p>Upload your reporter-export.json file and then go to the 'Home' link to check it out!</p>
+        <div class="alert alert-info" role="alert">
+            <p>Upload your reporter-export.json file and then go to the 'Home' link to check it out!</p>
+        </div>
+        <div class="alert alert-danger" role="alert">
+            <p>**NOTE** Must be an export from Reporter 1.2</p>
+        </div>
     </div>
 </div>
 {% endblock %}

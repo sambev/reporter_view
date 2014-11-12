@@ -100,3 +100,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "reporter_view/static"),
 )
+
+# Email stuff
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'youremail'
+EMAIL_HOST_PASSWORD = 'yourpassword'
+EMAIL_PORT = 587
+DEFAULT_TO_EMAIL = 'youremail'
