@@ -5,6 +5,8 @@ The goal of this project is to bring all the data from [ReporterApp](http://www.
 
 Dev and design contributions are deeply appreciated.  Make a pull request!
 
+To take a look at what this will be like, checkout [my site](http://www.sambev.com).
+
 Installing
 ==========
 
