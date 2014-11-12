@@ -1,7 +1,7 @@
 Reporter View Companion (Name is TBD)
 =======================================
 
-The goal of this project is to bring all the data from ReporterApp.
+The goal of this project is to bring all the data from [ReporterApp](http://www.reporter-app.com/).
 
 Dev and design contributions are deeply appreciated.  Make a pull request!
 
@@ -31,6 +31,8 @@ to point to the appropriate hosts/ports with the right credentials
 *** WARNING ***
 The settings.py file is tracked, DO NOT commit your credentials/server info if you are contributing.
 
-Once your database servers are running, start the webserver with
+Create css files with:
+`grunt less`
 
+Once your database servers are running, start the webserver with
 `python manage.py runserver`
