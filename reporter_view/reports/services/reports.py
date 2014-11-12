@@ -175,10 +175,10 @@ class ReportService(object):
                         tokens = response.get('tokens')
 
                         for token in tokens:
-                            if token not in summary['data']:
-                                summary['data'][token] = 1
+                            if token['text'] not in summary['data']:
+                                summary['data'][token['text']] = 1
                             else:
-                                summary['data'][token] += 1
+                                summary['data'][token['text']] += 1
 
                     elif response.get('numericResponse'):
                         summary['type'] = 'numeric'
@@ -213,7 +213,7 @@ class ReportService(object):
         """
         self.set_db_context(dbname)
         queries = [
-            {'responses.tokens': answer},
+            {'responses.tokens.text': answer},
             {'responses.locationResponse.text': answer},
         ]
         context = {
@@ -252,11 +252,11 @@ class ReportService(object):
                             if response.get('tokens'):
                                 context[question]['type'] = 'tokens'
                                 for token in response.get('tokens'):
-                                    if token != answer:
-                                        if token in context[question]:
-                                            context[question][token] += 1
+                                    if token['text'] != answer:
+                                        if token['text'] in context[question]:
+                                            context[question][token['text']] += 1
                                         else:
-                                            context[question][token] = 1
+                                            context[question][token['text']] = 1
 
                             elif response.get('numericResponse'):
                                 context[question]['type'] = 'numeric'
