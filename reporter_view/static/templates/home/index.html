@@ -79,7 +79,7 @@
                             <div class="col-lg-12">
                                 <ol>
                                     <li ng-repeat="entry in token.data | filter:index">
-                                        <a href="/reports/people/context/{{ entry[0] }}">
+                                        <a href="#/context/{{ token.question | encodeURIComponent }}/{{ entry[0] }}">
                                             {{ entry[0] }} - {{ entry[1] }}
                                         </a>
                                     </li>

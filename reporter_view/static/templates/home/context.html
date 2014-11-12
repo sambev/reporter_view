@@ -1,0 +1,133 @@
+<div ng-controller="ContextSearchController">
+    <div class="row">
+        <div class="col-lg-4">
+            <h1>{{ context.name | titlecase }}</h1>
+        </div>
+        <div class="col-lg-2 col-xs-6">
+            <div class="well center">
+                <p class="report-title">{{ context.amount }}</p>
+                <small>Reports</small>
+            </div>
+        </div>
+        <div class="col-lg-2 col-xs-6">
+            <div class="well center">
+                <p class="report-title">{{ context.locations_count }}</p>
+                <small>Locations</small>
+            </div>
+        </div>
+        <div class="col-lg-2 col-xs-6">
+            <div class="well center">
+                <p class="report-title">{{ context.tokens_count }}</p>
+                <small>Tokens</small>
+            </div>
+        </div>
+        <div class="col-lg-2 col-xs-6">
+            <div class="well center">
+                <p class="report-title">{{ context.numeric_count }}</p>
+                <small>numbers</small>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div ng-repeat="token in context.tokens">
+            <div class="col-lg-4 col-xs-6">
+                <div class="panel panel-success">
+                    <div class="panel-heading center">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h3 class="panel-title" style="padding-top:5px;">{{ token.question }}</h3>
+                            </div>
+                            <br><br>
+                            <div class="col-lg-12">
+                                <input type="text"
+                                    class="input-sm"
+                                    placeholder="Filter"
+                                    style="width:100%"
+                                    ng-model="index" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body token-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <ol>
+                                    <li ng-repeat="entry in token.data | filter:index">
+                                        <a href="#/context/{{ token.question | encodeURIComponent }}/{{ entry[0] }}">
+                                            {{ entry[0] | titlecase }} - {{ entry[1] }}
+                                        </a>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-repeat="location in context.locations">
+            <div class="col-lg-4 col-xs-6">
+                <div class="panel panel-danger">
+                    <div class="panel-heading center">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h3 class="panel-title" style="padding-top:5px;">{{ location.question }}</h3>
+                            </div>
+                            <br><br>
+                            <div class="col-lg-12">
+                                <input type="text"
+                                    class="input-sm"
+                                    placeholder="Filter"
+                                    style="width:100%"
+                                    ng-model="index" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body token-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <ol>
+                                    <li ng-repeat="entry in location.data | filter:index">
+                                        <a href="#/context/{{ location.question | encodeURIComponent }}/{{ entry[0] }}">
+                                            {{ entry[0] | titlecase }} - {{ entry[1] }}
+                                        </a>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-repeat="number in context.numeric">
+            <div class="col-lg-4 col-xs-6">
+                <div class="panel panel-warning">
+                    <div class="panel-heading center">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h3 class="panel-title" style="padding-top:5px;">{{ number.question }}</h3>
+                            </div>
+                            <br><br>
+                            <div class="col-lg-12">
+                                <input type="text"
+                                    class="input-sm"
+                                    placeholder="Filter"
+                                    style="width:100%"
+                                    ng-model="index" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body token-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <ol>
+                                    <li ng-repeat="entry in number.data | filter:index">
+                                        {{ entry[0] | titlecase }} - {{ entry[1] }}
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

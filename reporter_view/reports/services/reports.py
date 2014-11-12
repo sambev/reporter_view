@@ -204,3 +204,93 @@ class ReportService(object):
             summary['data'] = sorted(summary['data'].items(), key=itemgetter(1), reverse=True)
 
         return summary
+
+
+    def get_context(self, dbname, question, answer):
+        """Get the context of the given question and answer
+        :param {string} question
+        :param {string} answer
+        """
+        self.set_db_context(dbname)
+        queries = [
+            {'responses.tokens': answer},
+            {'responses.locationResponse.text': answer},
+        ]
+        context = {
+            'name': answer,
+            'amount': 0,
+            'battery': [],
+            'audio': [],
+            'weather': [],
+            'tokens': [],
+            'locations': [],
+            'numeric': [],
+            'tokens_count': 0,
+            'locations_count': 0,
+            'numeric_count': 0
+        }
+        reports = None
+        questions = self.questions.find({} , {'_id': 0, 'prompt': 1})
+        questions = [question['prompt'] for question in questions]
+
+        for query in queries:
+            reports = self._query(dbname, query)
+            if reports:
+                for report in reports:
+                    context['amount'] = len(reports)
+                    context['battery'].append(report['battery'])
+                    context['audio'].append(report['audio'])
+                    context['weather'].append(report.get('weather'))
+
+                    responses = report.get('responses', [])
+                    for response in responses:
+                        question = response.get('questionPrompt', None)
+                        if question not in context:
+                            context[question] = {}
+
+                        if question:
+                            if response.get('tokens'):
+                                context[question]['type'] = 'tokens'
+                                for token in response.get('tokens'):
+                                    if token != answer:
+                                        if token in context[question]:
+                                            context[question][token] += 1
+                                        else:
+                                            context[question][token] = 1
+
+                            elif response.get('numericResponse'):
+                                context[question]['type'] = 'numeric'
+                                number = response.get('numericResponse')
+                                if number in context[question]:
+                                    context[question][number] += 1
+                                else:
+                                    context[question][number] = 1
+
+                            elif 'locationResponse' in response:
+                                context[question]['type'] = 'locations'
+                                location = response.get('locationResponse', {}).get('text')
+
+                                if location not in context[question]:
+                                    context[question][location] = 1
+                                else:
+                                    context[question][location] += 1
+
+                for question in questions:
+                    if question in context and 'type' in context[question]: #TODO handle this better
+                        context_type = context[question]['type']
+                        del(context[question]['type'])
+                        context[context_type].append({
+                            'question': question,
+                            'type': context_type,
+                            'data': sorted(
+                                context[question].items(),
+                                key=itemgetter(1),
+                                reverse=True
+                            )
+                        })
+                        del(context[question])
+                        context[context_type + '_count'] = sum(
+                            [len(token['data']) for token in context[context_type]]
+                        )
+
+                return context
