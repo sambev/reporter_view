@@ -1,7 +1,7 @@
 Reporter View Companion (Name is TBD)
 =======================================
 
-The goal of this project is to bring all the data from [ReporterApp](http://www.reporter-app.com/).
+The goal of this project is to bring all the data from [ReporterApp](http://www.reporter-app.com/) for reflection and analysis.
 
 Dev and design contributions are deeply appreciated.  Make a pull request!
 
