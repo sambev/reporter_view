@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 from reporter_view.base.models import User
 
@@ -26,3 +26,8 @@ class AuthController(object):
         login(request, user)
 
         return redirect('/upload')
+
+    @classmethod
+    def signout(self, request):
+        logout(request)
+        return redirect('/')

@@ -7,6 +7,19 @@
 </head>
 <body>
     <div class="container" ng-app="reporterView">
+        <div class="row">
+            <div class="col-lg-9 col-xs-12">
+                <div class="page-header">
+                    <h1>Quantified Self Companion</h1>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-12">
+                <ul class="nav nav-pills page-header">
+                    <li><a class="active" href="/home">Home</a></li>
+                    <li><a href="/signout">Sign Out</a></li>
+                </ul>
+            </div>
+        </div>
         <br>
         <div ng-view ng-cloak></div>
     </div>
