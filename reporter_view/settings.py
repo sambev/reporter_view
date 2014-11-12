@@ -57,7 +57,7 @@ WSGI_APPLICATION = 'reporter_view.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-
+# WARNING DO NOT USE DEFAULTS LIKE THIS IN PRODUCTION
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
