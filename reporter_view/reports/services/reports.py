@@ -29,7 +29,6 @@ class ReportService(object):
         db = settings.DATABASES['mongo']
         self.client = MongoClient(db['HOST'], db['PORT'])
 
-
     def make_db_name(self, dbname):
         """
         :param {string} dbname
@@ -37,16 +36,16 @@ class ReportService(object):
         """
         return str(dbname).translate(None, '.')
 
-
     def set_db_context(self, dbname):
         """
         :param {string} dbname
         """
         dbname = self.make_db_name(dbname)
         self.db = self.client[dbname]
-        self.snapshots = self.db[settings.DATABASES['mongo']['REPORT_COLLECTION']]
-        self.questions = self.db[settings.DATABASES['mongo']['QUESTIONS_COLLECTION']]
-
+        self.snapshots = self.db[
+            settings.DATABASES['mongo']['REPORT_COLLECTION']]
+        self.questions = self.db[
+            settings.DATABASES['mongo']['QUESTIONS_COLLECTION']]
 
     def _query(self, dbname, query, filters=[], sort=ASCENDING):
         """
@@ -62,10 +61,10 @@ class ReportService(object):
         for filt in filters:
             query_filter[filt] = 1
 
-        data = [d for d in self.snapshots.find(query, query_filter).sort('date', sort)]
+        data = [d for d in self.snapshots.find(
+            query, query_filter).sort('date', sort)]
 
         return data
-
 
     def make_new_db(self, dbname, data):
         """Make a new database for the given user
@@ -73,15 +72,14 @@ class ReportService(object):
         :param {dict}
         """
         self.set_db_context(dbname)
-        self.snapshots.remove() # clear out anything that was there
+        self.snapshots.remove()  # clear out anything that was there
         self.questions.remove()
 
         for snapshot in data['snapshots']:
-            self.snapshots.insert(snapshot);
+            self.snapshots.insert(snapshot)
 
         for question in data['questions']:
             self.questions.insert(question)
-
 
     def get_totals(self, dbname):
         """Get the generic totals for the reports.  How many total reports,
@@ -104,16 +102,16 @@ class ReportService(object):
         last_date = parse_reporter_date(reports[-1].get('date'))
 
         tokens = self.snapshots.find({
-            'responses.tokens': { '$exists': True }
+            'responses.tokens': {'$exists': True}
         }).distinct('responses.tokens')
 
         locations = self.snapshots.find({
-            'responses.locationResponse.text': { '$exists': True }
+            'responses.locationResponse.text': {'$exists': True}
         }).distinct('responses.locationResponse.text')
 
         people = self.snapshots.find({
             'responses.questionPrompt': 'Who are you with?',
-            'responses.tokens': { '$exists': True }
+            'responses.tokens': {'$exists': True}
         }).distinct('responses.tokens')
 
         totals['reports'] = len(reports)
@@ -125,11 +123,11 @@ class ReportService(object):
 
         return totals
 
-
     def get_question_summaries(self, dbname):
         self.set_db_context(dbname)
-        questions = self.questions.find({} , {'_id': 0, 'prompt': 1})
-        summaries = [self.get_summary_for_question(dbname, question['prompt']) for question in questions]
+        questions = self.questions.find({}, {'_id': 0, 'prompt': 1})
+        summaries = [self.get_summary_for_question(
+            dbname, question['prompt']) for question in questions]
         organized = {
             'numeric': [],
             'tokens': [],
@@ -145,7 +143,6 @@ class ReportService(object):
                 organized['locations'].append(summary)
 
         return organized
-
 
     def get_summary_for_question(self, dbname, question):
         """Get the summary for the question
@@ -182,12 +179,19 @@ class ReportService(object):
 
                     elif response.get('numericResponse'):
                         summary['type'] = 'numeric'
+
+                        if response['numericResponse'] not in summary['data']:
+                            summary['data'][response['numericResponse']] = 1
+                        else:
+                            summary['data'][response['numericResponse']] += 1
+
                         numeric_total += float(response['numericResponse'])
                         entries.append(float(response['numericResponse']))
 
                     elif 'locationResponse' in response:
                         summary['type'] = 'locations'
-                        location = response.get('locationResponse', {}).get('text')
+                        location = response.get(
+                            'locationResponse', {}).get('text')
 
                         if location not in summary['data']:
                             summary['data'][location] = 1
@@ -200,11 +204,10 @@ class ReportService(object):
             summary['avg'] = numeric_total / len(entries)
             summary['current'] = entries[-1]
 
-        elif summary['type'] in ['tokens', 'location']:
-            summary['data'] = sorted(summary['data'].items(), key=itemgetter(1), reverse=True)
+        summary['data'] = sorted(
+            summary['data'].items(), key=itemgetter(1), reverse=True)
 
         return summary
-
 
     def get_context(self, dbname, question, answer):
         """Get the context of the given question and answer
@@ -215,6 +218,7 @@ class ReportService(object):
         queries = [
             {'responses.tokens.text': answer},
             {'responses.locationResponse.text': answer},
+            {'responses.numericResponse': answer}
         ]
         context = {
             'name': answer,
@@ -230,7 +234,7 @@ class ReportService(object):
             'numeric_count': 0
         }
         reports = None
-        questions = self.questions.find({} , {'_id': 0, 'prompt': 1})
+        questions = self.questions.find({}, {'_id': 0, 'prompt': 1})
         questions = [question['prompt'] for question in questions]
 
         for query in queries:
@@ -261,14 +265,16 @@ class ReportService(object):
                             elif response.get('numericResponse'):
                                 context[question]['type'] = 'numeric'
                                 number = response.get('numericResponse')
-                                if number in context[question]:
-                                    context[question][number] += 1
-                                else:
-                                    context[question][number] = 1
+                                if number != answer:
+                                    if number in context[question]:
+                                        context[question][number] += 1
+                                    else:
+                                        context[question][number] = 1
 
                             elif 'locationResponse' in response:
                                 context[question]['type'] = 'locations'
-                                location = response.get('locationResponse', {}).get('text')
+                                location = response.get(
+                                    'locationResponse', {}).get('text')
 
                                 if location not in context[question]:
                                     context[question][location] = 1
@@ -276,7 +282,8 @@ class ReportService(object):
                                     context[question][location] += 1
 
                 for question in questions:
-                    if question in context and 'type' in context[question]: #TODO handle this better
+                    # TODO handle this better
+                    if question in context and 'type' in context[question]:
                         context_type = context[question]['type']
                         del(context[question]['type'])
                         context[context_type].append({
@@ -290,7 +297,10 @@ class ReportService(object):
                         })
                         del(context[question])
                         context[context_type + '_count'] = sum(
-                            [len(token['data']) for token in context[context_type]]
+                            [len(token['data'])
+                             for token in context[context_type]]
                         )
 
                 return context
+
+        return False

@@ -11,7 +11,7 @@ reporter_view.factory('summaryService', [
              * @return {$http promise}
              */
             get_totals: function () {
-                return $http.get('/reports/totals')
+                return $http.get('/reports/totals');
             },
 
             /**
@@ -19,8 +19,8 @@ reporter_view.factory('summaryService', [
              * @return {$http promise}
              */
             get_question_summaries: function() {
-                return $http.get('/reports/summary')
+                return $http.get('/reports/summary');
             }
-        }
+        };
     }
 ]);

@@ -91,5 +91,45 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div ng-repeat="number in numerics">
+            <div class="col-lg-4 col-xs-6">
+                <div class="panel panel-warning">
+                    <div class="panel-heading center">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h3 class="panel-title" style="padding-top:5px;">
+                                    {{ number.question }}
+                                </h3>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="text"
+                                    class="input-sm"
+                                    placeholder="Filter"
+                                    style="width:100%"
+                                    ng-model="index" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body token-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <ol>
+                                    <li ng-repeat="entry in number.data | filter:index">
+                                        <a href="#/context/{{ number.question | encodeURIComponent }}/{{ entry[0] }}">
+                                            {{ entry[0] }} - {{ entry[1] }}
+                                        </a>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <br>
